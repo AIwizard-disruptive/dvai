@@ -71,3 +71,5 @@ temp/
 backend/env.local.configured
 LINEAR_SETUP_COMPLETE.md
 
+CONFIGURATION_STATUS.md
+backend/setup_google_docs_generator.py
