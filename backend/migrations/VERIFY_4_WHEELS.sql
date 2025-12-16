@@ -137,3 +137,4 @@ SELECT
     (SELECT COUNT(*) FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid WHERE n.nspname = 'public' AND p.proname IN ('generate_cv_from_linkedin', 'sync_person_to_google_directory')) as helper_functions;
 
 -- If critical_tables = 4, materialized_views = 2, helper_functions = 2, you're good! ✅
+

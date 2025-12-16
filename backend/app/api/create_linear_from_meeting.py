@@ -449,3 +449,4 @@ async def get_swedish_meeting_for_sync():
         "quick_command": f"curl -X POST http://localhost:8000/linear-sync/meeting/{meeting_id}"
     }
 
+

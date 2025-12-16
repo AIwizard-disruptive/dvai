@@ -227,3 +227,4 @@ After running `FINAL_4_WHEELS_COMPLETE.sql`, you have:
 **Next:** Set up the Python services (AI engine, sync services, agents)
 
 See `IMPLEMENTATION_STATUS.md` for next steps!
+

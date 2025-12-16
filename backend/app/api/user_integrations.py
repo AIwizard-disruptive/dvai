@@ -24,10 +24,7 @@ router = APIRouter(prefix="/user-integrations", tags=["User Integrations"])
 
 @router.get("/settings", response_class=HTMLResponse)
 async def integration_settings_page():
-    """
-    User integration settings page.
-    Shows all available integrations and connection status.
-    """
+    """User integration settings page - monochrome design with left sidebar."""
     
     html = f"""
 <!DOCTYPE html>
@@ -35,169 +32,197 @@ async def integration_settings_page():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integrations - Meeting Intelligence</title>
+    <title>Integrations - Admin</title>
     {get_dv_styles()}
     <style>
-        .integrations-container {{
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-        }}
-        
         .integration-card {{
-            border: 2px solid #e0e0e0;
-            border-radius: 16px;
-            padding: 32px;
-            margin: 20px 0;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s;
-            background: white;
+            transition: all 0.15s;
         }}
         
         .integration-card:hover {{
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            transform: translateY(-2px);
+            border-color: var(--gray-300);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }}
         
         .integration-card.connected {{
-            border-color: #4caf50;
-            background: linear-gradient(135deg, #f1f8f4 0%, #ffffff 100%);
+            background: white;
+            border-color: var(--gray-300);
+        }}
+        
+        .integration-icon {{
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }}
+        
+        .integration-icon svg {{
+            width: 20px;
+            height: 20px;
+            stroke: var(--gray-600);
         }}
         
         .integration-info {{
             flex: 1;
         }}
         
-        .integration-info h3 {{
-            font-size: 24px;
-            margin-bottom: 8px;
-            color: #1a1a1a;
+        .integration-name {{
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 4px;
         }}
         
-        .integration-info p {{
-            color: #666;
-            margin-bottom: 12px;
+        .integration-description {{
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-bottom: 8px;
         }}
         
         .status-badge {{
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
         }}
         
         .status-badge.connected {{
-            background: #4caf50;
-            color: white;
+            background: var(--gray-100);
+            color: var(--gray-900);
         }}
         
         .status-badge.disconnected {{
-            background: #f0f0f0;
-            color: #999;
+            background: var(--gray-100);
+            color: var(--gray-600);
         }}
         
         .connect-btn {{
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #0066cc, #00c853);
+            padding: 8px 16px;
+            background: var(--gray-900);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+            font-weight: 500;
+            font-size: 13px;
+            transition: all 0.15s;
         }}
         
         .connect-btn:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 102, 204, 0.4);
+            background: var(--gray-700);
         }}
         
         .disconnect-btn {{
-            padding: 14px 28px;
-            background: #f44336;
-            color: white;
-            border: none;
-            border-radius: 10px;
+            padding: 8px 16px;
+            background: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
+            font-weight: 500;
+            font-size: 13px;
         }}
         
         .disconnect-btn:hover {{
-            background: #d32f2f;
-        }}
-        
-        .loading {{
-            opacity: 0.6;
-            pointer-events: none;
+            background: var(--gray-50);
         }}
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">
-            <span class="logo-accent">Disruptive</span> Ventures
-        </div>
-        <h1>🔌 Your Integrations</h1>
-        <p>Connect your tools to enable automatic task creation and notifications</p>
-    </div>
+    {get_admin_sidebar('settings', 'Markus Löwegren', 'markus.lowegren@disruptiveventures.se', '')}
     
-    <div class="nav">
-        <a href="/dashboard-ui">← Dashboard</a>
-        <a href="/docs#/User%20Integrations">API Docs</a>
-    </div>
-    
-    <div class="integrations-container">
-        <!-- Linear Integration -->
-        <div class="integration-card" id="linear-card">
-            <div class="integration-info">
-                <h3>📊 Linear</h3>
-                <p>Automatically create tasks from meeting action items in your Linear workspace</p>
-                <span class="status-badge disconnected" id="linear-status">Not connected</span>
+    <div class="main-content">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h1 class="page-title">Your Integrations</h1>
+                <p class="page-description">Connect your tools to enable automatic task creation and notifications</p>
             </div>
-            <button class="connect-btn" id="linear-btn" onclick="connectLinear()">
-                Connect Linear
-            </button>
         </div>
         
-        <!-- Google Integration -->
-        <div class="integration-card" id="google-card">
-            <div class="integration-info">
-                <h3>📧 Google Workspace</h3>
-                <p>Send emails, create calendar events, and save documents to your Google Drive</p>
-                <span class="status-badge disconnected" id="google-status">Not connected</span>
+        <div class="container">
+            <!-- Linear Integration -->
+            <div class="integration-card" id="linear-card">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="integration-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <div class="integration-info">
+                        <div class="integration-name">Linear</div>
+                        <div class="integration-description">Automatically create tasks from meeting action items in your Linear workspace</div>
+                        <span class="status-badge disconnected" id="linear-status">Not connected</span>
+                    </div>
+                </div>
+                <button class="connect-btn" id="linear-btn" onclick="connectLinear()">
+                    Connect Linear
+                </button>
             </div>
-            <button class="connect-btn" id="google-btn" onclick="connectGoogle()">
-                Connect Google
-            </button>
-        </div>
-        
-        <!-- Slack Integration -->
-        <div class="integration-card" id="slack-card">
-            <div class="integration-info">
-                <h3>💬 Slack</h3>
-                <p>Get notifications in Slack when meetings are processed</p>
-                <span class="status-badge disconnected" id="slack-status">Not connected</span>
+            
+            <!-- Google Integration -->
+            <div class="integration-card" id="google-card">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="integration-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="9" y1="3" x2="9" y2="21"/>
+                        </svg>
+                    </div>
+                    <div class="integration-info">
+                        <div class="integration-name">Google Workspace</div>
+                        <div class="integration-description">Send emails, create calendar events, and save documents to your Google Drive</div>
+                        <span class="status-badge disconnected" id="google-status">Not connected</span>
+                    </div>
+                </div>
+                <button class="connect-btn" id="google-btn" onclick="connectGoogle()">
+                    Connect Google
+                </button>
             </div>
-            <button class="connect-btn" id="slack-btn" onclick="connectSlack()">
-                Connect Slack
-            </button>
-        </div>
-        
-        <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
-            <h3 style="margin-bottom: 12px;">ℹ️ How it works</h3>
-            <p style="color: #666; line-height: 1.6;">
-                When you connect an integration, you'll be redirected to that service to authorize access.
-                Your credentials are securely stored and encrypted. You can disconnect at any time.
-                <br><br>
-                Once connected, tasks will automatically be created using <strong>your account</strong>,
-                so you'll see them in your Linear workspace, get notifications, and have full control.
-            </p>
+            
+            <!-- Slack Integration -->
+            <div class="integration-card" id="slack-card">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="integration-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="integration-info">
+                        <div class="integration-name">Slack</div>
+                        <div class="integration-description">Get notifications in Slack when meetings are processed</div>
+                        <span class="status-badge disconnected" id="slack-status">Not connected</span>
+                    </div>
+                </div>
+                <button class="connect-btn" id="slack-btn" onclick="connectSlack()">
+                    Connect Slack
+                </button>
+            </div>
+            
+            <!-- Info Box -->
+            <div class="info-box" style="margin-top: 32px; padding: 16px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px;">
+                <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--gray-900);">How it works</h3>
+                <p style="font-size: 13px; color: var(--gray-600); line-height: 1.6;">
+                    When you connect an integration, you'll be redirected to that service to authorize access.
+                    Your credentials are securely stored and encrypted. You can disconnect at any time.
+                    <br><br>
+                    Once connected, tasks will automatically be created using <strong>your account</strong>,
+                    so you'll see them in your Linear workspace, get notifications, and have full control.
+                </p>
+            </div>
         </div>
     </div>
     
@@ -524,5 +549,6 @@ async def user_slack_status(user = Depends(get_current_user)):
     }).execute()
     
     return {"connected": bool(result.data)}
+
 
 

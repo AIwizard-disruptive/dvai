@@ -680,3 +680,4 @@ async def get_linear_qr(user = Depends(get_current_user)):
 **This transforms your system from admin-configured to truly self-service!** ✨
 
 
+

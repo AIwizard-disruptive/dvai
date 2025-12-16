@@ -40,3 +40,4 @@ AND table_name IN ('orgs', 'people', 'organizations', 'meetings');
 
 -- If you see 4 tables above, you're good to proceed!
 -- Now run: FINAL_4_WHEELS_COMPLETE.sql
+

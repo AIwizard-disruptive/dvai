@@ -1072,3 +1072,4 @@ class RETTSAFEValidator:
             "suggestions": suggestions,
             "rett_safe_compliant": passes
         }
+

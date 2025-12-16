@@ -69,3 +69,4 @@ async def trigger_all_processing():
 if __name__ == "__main__":
     asyncio.run(trigger_all_processing())
 
+

@@ -33,11 +33,17 @@ from app.api.task_assistance import router as task_assistance_router
 from app.api.document_viewer import router as document_viewer_router
 from app.api.personal_agenda import router as personal_agenda_router
 from app.api.integration_test import router as integration_test_router
+from app.api.integration_test_page import router as integration_test_page_router
 from app.api.user_integrations import router as user_integrations_router
 from app.api.marcus_test_distribution import router as marcus_test_router
 from app.api.create_linear_from_meeting import router as linear_sync_router
 from app.api.knowledge_bank import router as knowledge_router
 from app.api.linear_sync import router as linear_sync_router
+from app.api.sync_profiles import router as sync_profiles_router
+from app.api.wheel_people import router as wheel_people_router
+from app.api.wheel_dealflow import router as wheel_dealflow_router
+from app.api.wheel_building import router as wheel_building_router
+from app.api.wheel_admin import router as wheel_admin_router
 
 
 # Initialize Sentry if configured
@@ -99,6 +105,7 @@ app.include_router(meeting_view_router, tags=["Meeting View"])
 app.include_router(personal_agenda_router, tags=["Personal Agenda"])
 app.include_router(automation_router, prefix="/automation", tags=["Automation"])
 app.include_router(integration_test_router, tags=["Integrations"])
+app.include_router(integration_test_page_router, tags=["Integration Test UI"])
 app.include_router(user_integrations_router, tags=["User Integrations"])
 app.include_router(marcus_test_router, tags=["Marcus Test"])
 app.include_router(linear_sync_router, tags=["Linear Sync"])
@@ -118,6 +125,11 @@ app.include_router(sync_router, prefix="/sync", tags=["Sync"])
 app.include_router(calendar_router, prefix="/calendar", tags=["Calendar"])
 app.include_router(meeting_with_agenda_router, tags=["AI Agenda"])
 app.include_router(knowledge_router, tags=["Knowledge Bank"])
+app.include_router(sync_profiles_router, tags=["Admin - Profile Sync"])
+app.include_router(wheel_people_router, tags=["Wheels - People"])
+app.include_router(wheel_dealflow_router, tags=["Wheels - Dealflow"])
+app.include_router(wheel_building_router, tags=["Wheels - Building"])
+app.include_router(wheel_admin_router, tags=["Wheels - Admin"])
 
 
 @app.get("/health")

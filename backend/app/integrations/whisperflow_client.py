@@ -362,3 +362,4 @@ def whisperflow_to_dv_format(whisperflow_result: Dict) -> Dict:
         "duration": whisperflow_result.get('duration', 0),
         "provider": "whisperflow"
     }
+

@@ -412,3 +412,4 @@ tail -f backend/logs/app.log
 Or check the terminal where the server is running for real-time errors.
 
 
+

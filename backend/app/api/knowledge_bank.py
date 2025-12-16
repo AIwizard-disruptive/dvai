@@ -10,6 +10,7 @@ from datetime import datetime
 from supabase import create_client
 from app.config import settings
 from app.api.styles import get_dv_styles
+from app.api.sidebar_component import get_admin_sidebar
 
 router = APIRouter(prefix="/knowledge", tags=["Knowledge Bank"])
 
@@ -39,8 +40,13 @@ async def knowledge_bank_ui():
     # Get all policy documents
     policies = supabase.table('policy_documents').select('*').order('created_at', desc=True).execute().data
     
-    # Get all people for profiles
+    # Get all people for profiles - will deduplicate in generate_people_cards
     people = supabase.table('people').select('*').order('name').execute().data
+    
+    # Get current user info - Markus Löwegren
+    current_user = next((p for p in people if 'marcus' in p.get('name', '').lower() or 'markus' in p.get('name', '').lower()), None)
+    if not current_user:
+        current_user = {'name': 'Markus Löwegren', 'email': 'markus.lowegren@disruptiveventures.se', 'linkedin_url': ''}
     
     html = f"""
 <!DOCTYPE html>
@@ -48,170 +54,195 @@ async def knowledge_bank_ui():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knowledge Bank - Disruptive Ventures</title>
+    <title>Admin: Knowledge Bank - Disruptive Ventures</title>
     {get_dv_styles()}
     <style>
         .knowledge-grid {{
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 24px;
-            padding: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
         }}
         
         .policy-card {{
             background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            border-left: 4px solid #635BFF;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.15s;
         }}
         
         .policy-card:hover {{
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            border-color: var(--gray-300);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }}
         
         .policy-type {{
             display: inline-block;
-            background: #635BFF;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
             text-transform: uppercase;
             margin-bottom: 12px;
         }}
         
         .policy-title {{
-            font-size: 20px;
-            font-weight: 700;
-            color: #0A2540;
-            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
         }}
         
         .policy-description {{
-            color: #425466;
-            line-height: 1.6;
-            margin-bottom: 16px;
+            color: var(--gray-600);
+            line-height: 1.5;
+            margin-bottom: 12px;
+            font-size: 13px;
         }}
         
         .policy-meta {{
             display: flex;
-            gap: 12px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid #EDF2F7;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--gray-100);
         }}
         
         .policy-tag {{
-            background: #F7FAFC;
-            color: #425466;
-            padding: 4px 10px;
+            background: var(--gray-100);
+            color: var(--gray-600);
+            padding: 2px 8px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 11px;
         }}
         
         .policy-actions {{
-            margin-top: 16px;
+            margin-top: 12px;
             display: flex;
-            gap: 12px;
+            gap: 8px;
         }}
         
         .btn-primary {{
-            background: linear-gradient(135deg, #635BFF, #00D4FF);
+            background: var(--gray-900);
             color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
+            font-size: 13px;
             display: inline-block;
+            border: none;
+        }}
+        
+        .btn-primary:hover {{
+            background: var(--gray-700);
         }}
         
         .btn-secondary {{
             background: white;
-            color: #635BFF;
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: 2px solid #635BFF;
+            color: var(--gray-700);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--gray-300);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
+            font-size: 13px;
             display: inline-block;
+        }}
+        
+        .btn-secondary:hover {{
+            background: var(--gray-50);
         }}
         
         .people-grid {{
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }}
+        
+        @media (max-width: 1024px) {{
+            .people-grid {{
+                grid-template-columns: repeat(2, 1fr);
+            }}
+        }}
+        
+        @media (max-width: 640px) {{
+            .people-grid {{
+                grid-template-columns: 1fr;
+            }}
         }}
         
         .person-card {{
             background: white;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 8px;
+            padding: 16px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid var(--gray-200);
         }}
         
         .person-avatar {{
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #635BFF, #00D4FF);
-            color: white;
+            background: var(--gray-200);
+            color: var(--gray-600);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            font-weight: 700;
-            margin: 0 auto 16px;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 auto 12px;
+            overflow: hidden;
+        }}
+        
+        .person-avatar img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }}
         
         .person-name {{
-            font-size: 18px;
-            font-weight: 700;
-            color: #0A2540;
-            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 4px;
         }}
         
         .person-role {{
-            color: #635BFF;
-            font-size: 14px;
-            margin-bottom: 12px;
+            color: var(--gray-600);
+            font-size: 12px;
+            margin-bottom: 8px;
         }}
         
         .tabs {{
             display: flex;
-            gap: 0;
-            background: white;
-            border-radius: 12px;
-            padding: 4px;
-            max-width: 400px;
-            margin: 20px auto;
+            gap: 8px;
+            margin-bottom: 24px;
         }}
         
         .tab {{
-            flex: 1;
-            padding: 12px 24px;
+            padding: 8px 12px;
             border: none;
             background: transparent;
-            color: #425466;
-            font-weight: 600;
+            color: var(--gray-700);
+            font-weight: 500;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s;
+            border-radius: 6px;
+            transition: all 0.15s;
+            font-size: 13px;
+        }}
+        
+        .tab:hover {{
+            background: var(--gray-100);
         }}
         
         .tab.active {{
-            background: #635BFF;
-            color: white;
+            background: var(--gray-100);
+            color: var(--gray-900);
         }}
         
         .tab-content {{
@@ -224,36 +255,79 @@ async def knowledge_bank_ui():
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">
-            <span class="logo-accent">Disruptive</span> Ventures
+    {get_admin_sidebar('knowledge', current_user.get('name', 'Admin User'), current_user.get('email', ''), current_user.get('linkedin_url', ''))}
+    
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Knowledge Bank</h1>
+            <p class="page-description">Company policies, playbooks, and team profiles</p>
         </div>
-        <h1>📚 Knowledge Bank</h1>
-        <p>Company policies, playbooks, and team profiles</p>
-    </div>
-    
-    <div class="nav">
-        <a href="/dashboard-ui">← Dashboard</a>
-        <a href="/knowledge/upload-policy">+ Add Policy</a>
-        <a href="/knowledge/people">👥 Team Directory</a>
-    </div>
-    
-    <div class="tabs">
-        <button class="tab active" onclick="showTab('policies')">📋 Policies</button>
-        <button class="tab" onclick="showTab('people')">👥 People</button>
-    </div>
-    
-    <!-- POLICIES TAB -->
-    <div id="policies-tab" class="tab-content active">
-        <div class="knowledge-grid">
-            {generate_policy_cards(policies) if policies else '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #666;"><h3>No policies yet</h3><p>Add your first policy document to get started</p><a href="/knowledge/add-policy" class="btn-primary">+ Add Policy</a></div>'}
-        </div>
-    </div>
-    
-    <!-- PEOPLE TAB -->
-    <div id="people-tab" class="tab-content">
-        <div class="people-grid">
-            {generate_people_cards(people) if people else '<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #666;"><h3>No team members yet</h3></div>'}
+        
+        <div class="container">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('policies')">Policies</button>
+                <button class="tab" onclick="showTab('people')">People</button>
+            </div>
+            
+            <!-- POLICIES TAB -->
+            <div id="policies-tab" class="tab-content active">
+                <div class="section-header">
+                    <h2>Policies ({len(policies) if policies else 0})</h2>
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" onclick="toggleView('policies', 'card')" title="Card View">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                        </button>
+                        <button class="view-toggle-btn" onclick="toggleView('policies', 'list')" title="List View">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <line x1="8" y1="6" x2="21" y2="6"/>
+                                <line x1="8" y1="12" x2="21" y2="12"/>
+                                <line x1="8" y1="18" x2="21" y2="18"/>
+                                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                <line x1="3" y1="18" x2="3.01" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="policies-container" class="card-view">
+                    {generate_policy_cards(policies) if policies else '<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--gray-600);"><div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">No policies yet</div><p style="font-size: 13px; margin-bottom: 16px;">Add your first policy document to get started</p><a href="/knowledge/add-policy" class="btn-primary">+ Add Policy</a></div>'}
+                </div>
+            </div>
+            
+            <!-- PEOPLE TAB -->
+            <div id="people-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>People</h2>
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" onclick="toggleView('people', 'card')" title="Card View">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                        </button>
+                        <button class="view-toggle-btn" onclick="toggleView('people', 'list')" title="List View">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <line x1="8" y1="6" x2="21" y2="6"/>
+                                <line x1="8" y1="12" x2="21" y2="12"/>
+                                <line x1="8" y1="18" x2="21" y2="18"/>
+                                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                <line x1="3" y1="18" x2="3.01" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="people-container" class="card-view three-col">
+                    {generate_people_cards(people) if people else '<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--gray-600);"><div style="font-size: 14px; font-weight: 500;">No team members yet</div></div>'}
+                </div>
+            </div>
         </div>
     </div>
     
@@ -267,6 +341,95 @@ async def knowledge_bank_ui():
             document.getElementById(tabName + '-tab').classList.add('active');
             event.target.classList.add('active');
         }}
+        
+        function toggleView(section, view) {{
+            const container = document.getElementById(section + '-container');
+            const buttons = event.currentTarget.parentElement.querySelectorAll('.view-toggle-btn');
+            
+            // Update active button
+            buttons.forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Toggle view
+            if (view === 'list') {{
+                container.className = 'list-view';
+            }} else {{
+                if (section === 'people') {{
+                    container.className = 'card-view three-col';
+                }} else {{
+                    container.className = 'card-view';
+                }}
+            }}
+            
+            // Save preference
+            localStorage.setItem(section + '-view', view);
+        }}
+        
+        // Restore view preferences on load
+        window.addEventListener('load', () => {{
+            const peopleView = localStorage.getItem('people-view') || 'card';
+            const policiesView = localStorage.getItem('policies-view') || 'card';
+            
+            // Restore people view
+            if (peopleView === 'list') {{
+                const peopleContainer = document.getElementById('people-container');
+                if (peopleContainer) peopleContainer.className = 'list-view';
+                // Update button
+                document.querySelectorAll('#people-tab .view-toggle-btn')[1]?.classList.add('active');
+                document.querySelectorAll('#people-tab .view-toggle-btn')[0]?.classList.remove('active');
+            }}
+            
+            // Restore policies view
+            if (policiesView === 'list') {{
+                const policiesContainer = document.getElementById('policies-container');
+                if (policiesContainer) policiesContainer.className = 'list-view';
+                // Update button
+                document.querySelectorAll('#policies-tab .view-toggle-btn')[1]?.classList.add('active');
+                document.querySelectorAll('#policies-tab .view-toggle-btn')[0]?.classList.remove('active');
+            }}
+        }});
+    </script>
+        
+        function toggleView(section, view) {{
+            const container = document.getElementById(section + '-container');
+            const buttons = event.currentTarget.parentElement.querySelectorAll('.view-toggle-btn');
+            
+            // Update active button
+            buttons.forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Toggle view
+            if (view === 'list') {{
+                container.className = 'list-view';
+            }} else {{
+                if (section === 'people') {{
+                    container.className = 'card-view three-col';
+                }} else {{
+                    container.className = 'card-view';
+                }}
+            }}
+            
+            // Save preference
+            localStorage.setItem(section + '-view', view);
+        }}
+        
+        // Restore view preferences on load
+        window.addEventListener('load', () => {{
+            const peopleView = localStorage.getItem('people-view') || 'card';
+            const policiesView = localStorage.getItem('policies-view') || 'card';
+            
+            // Restore people view
+            if (peopleView === 'list') {{
+                const peopleContainer = document.getElementById('people-container');
+                if (peopleContainer) peopleContainer.className = 'list-view';
+            }}
+            
+            // Restore policies view
+            if (policiesView === 'list') {{
+                const policiesContainer = document.getElementById('policies-container');
+                if (policiesContainer) policiesContainer.className = 'list-view';
+            }}
+        }});
     </script>
 </body>
 </html>
@@ -276,17 +439,17 @@ async def knowledge_bank_ui():
 
 
 def generate_policy_cards(policies: list) -> str:
-    """Generate HTML for policy cards."""
+    """Generate HTML for policy cards - monochrome design."""
     cards = []
     
     for policy in policies:
         tags_html = ' '.join([f'<span class="policy-tag">{tag}</span>' for tag in (policy.get('tags') or [])])
         
-        required_badge = '<span style="background: #FFA726; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px;">REQUIRED</span>' if policy.get('is_required_reading') else ''
+        required_badge = '<span style="background: var(--gray-200); color: var(--gray-700); padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px; font-weight: 500;">REQUIRED</span>' if policy.get('is_required_reading') else ''
         
         card = f"""
         <div class="policy-card">
-            <div class="policy-type">{policy.get('policy_type', 'policy').upper()}</div>
+            <div class="policy-type">{policy.get('policy_type', 'policy')}</div>
             <div class="policy-title">
                 {policy['title']}
                 {required_badge}
@@ -297,13 +460,13 @@ def generate_policy_cards(policies: list) -> str:
             {f'<div class="policy-meta">{tags_html}</div>' if tags_html else ''}
             <div class="policy-actions">
                 <a href="{policy['google_drive_url']}" target="_blank" class="btn-primary">
-                    📄 Open Document
+                    Open Document
                 </a>
                 <button onclick="acknowledgePolicy('{policy['id']}')" class="btn-secondary">
-                    ✓ Mark as Read
+                    Mark as Read
                 </button>
             </div>
-            <div style="margin-top: 12px; font-size: 12px; color: #999;">
+            <div style="margin-top: 12px; font-size: 11px; color: var(--gray-500);">
                 {f"Owner: {policy.get('owner_name', 'Unknown')}" if policy.get('owner_name') else ''}
                 | Added: {str(policy.get('created_at', ''))[:10]}
             </div>
@@ -315,21 +478,53 @@ def generate_policy_cards(policies: list) -> str:
 
 
 def generate_people_cards(people: list) -> str:
-    """Generate HTML for people profile cards."""
+    """
+    Generate HTML for people profile cards - deduplicated by name, with LinkedIn images.
+    
+    Filters out users with incomplete profiles (missing name, email, or title).
+    """
     cards = []
+    seen_names = set()
     
     for person in people:
-        initials = ''.join([n[0].upper() for n in person['name'].split()[:2]]) if person.get('name') else '?'
+        name = person.get('name', '').strip()
+        email = person.get('email', '').strip()
+        
+        # Filter: Skip users with missing critical data
+        if not name:
+            continue
+        
+        if not email:
+            continue
+        
+        # Get title/role with proper None handling
+        title = person.get('title') or person.get('role')
+        if not title or str(title).lower() == 'none':
+            # Skip users with no title/role data
+            continue
+        
+        # Skip duplicates (case-insensitive)
+        name_lower = name.lower()
+        if name_lower in seen_names:
+            continue
+        seen_names.add(name_lower)
+        
+        # Get initials for fallback
+        initials = ''.join([n[0].upper() for n in name.split()[:2]])
+        
+        # Use LinkedIn image if available, otherwise show initials
+        linkedin_url = person.get('linkedin_url', '')
+        avatar_html = f'<img src="{linkedin_url}" alt="{name}" onerror="this.style.display=\'none\'; this.parentElement.textContent=\'{initials}\';">' if linkedin_url else initials
         
         card = f"""
         <div class="person-card">
-            <div class="person-avatar">{initials}</div>
-            <div class="person-name">{person['name']}</div>
-            <div class="person-role">{person.get('title', person.get('role', 'Team Member'))}</div>
-            <div style="color: #666; font-size: 13px; margin-bottom: 12px;">
-                {person.get('email', '')}
+            <div class="person-avatar">{avatar_html}</div>
+            <div class="person-name">{name}</div>
+            <div class="person-role">{title}</div>
+            <div style="color: var(--gray-600); font-size: 12px; margin-bottom: 12px;">
+                {email}
             </div>
-            <a href="/knowledge/person/{person['id']}" class="btn-primary" style="font-size: 14px; padding: 8px 16px;">
+            <a href="/knowledge/person/{person['id']}" class="btn-primary" style="font-size: 13px; padding: 6px 12px;">
                 View Profile
             </a>
         </div>
@@ -534,4 +729,5 @@ async def add_culture_playbook_form():
     """
     
     return HTMLResponse(content=html)
+
 

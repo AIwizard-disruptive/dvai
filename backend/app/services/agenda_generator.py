@@ -286,3 +286,4 @@ def get_agenda_generator_service() -> AgendaGeneratorService:
     if _agenda_generator_service is None:
         _agenda_generator_service = AgendaGeneratorService()
     return _agenda_generator_service
+

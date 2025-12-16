@@ -28,3 +28,4 @@ celery_app.autodiscover_tasks(["app.worker.tasks"])
 
 
 
+

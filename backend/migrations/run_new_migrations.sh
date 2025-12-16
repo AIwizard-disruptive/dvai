@@ -60,3 +60,4 @@ echo "  3. Configure Slack and Whisperflow API keys"
 echo "  4. Create contact groups in Google Contacts"
 echo "  5. Set up custom schemas in Google Workspace Directory"
 echo ""
+

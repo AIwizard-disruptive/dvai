@@ -168,3 +168,4 @@ echo "  2. Check Google Calendar for the event"
 echo "  3. Review calendar proposals: curl $API_URL/calendar/proposals -H 'Authorization: Bearer $TOKEN' -H 'X-Org-Id: $ORG_ID'"
 echo ""
 echo "🎉 AI Meeting Agenda Generator is working!"
+

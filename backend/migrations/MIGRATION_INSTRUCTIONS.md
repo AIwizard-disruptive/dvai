@@ -141,3 +141,4 @@ If you encounter errors other than "already exists":
 4. Continue with the rest of the migration
 
 The migrations are designed to be **idempotent** (safe to run multiple times).
+

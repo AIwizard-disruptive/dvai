@@ -353,3 +353,4 @@ Full RLS policies:
 All tables created. All integrations ready. AI engine with RETT/SAFE principles built in. Google Workspace as your backend. LinkedIn integration ready.
 
 **Time to execute the migrations and start automating!** 🚀
+

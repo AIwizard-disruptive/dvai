@@ -30,6 +30,24 @@ aiohttp==3.9.1
 # Document Processing
 python-docx==1.1.0
 python-magic==0.4.27
+pypdf2==3.0.1
+pdfplumber==0.10.3
+pytesseract==0.3.10  # OCR for scanned PDFs
+pillow==10.2.0  # Image processing
+markdown==3.5.1  # Markdown generation
+
+# Web Scraping
+beautifulsoup4==4.12.3
+lxml==5.1.0
+playwright==1.41.1  # For dynamic content
+trafilatura==1.6.3  # Clean article extraction
+
+# Text Processing & NLP
+spacy==3.7.2  # Entity extraction
+langdetect==1.0.9  # Language detection
+
+# Data Validation
+jsonschema==4.20.0
 
 # Audio Processing
 pydub==0.25.1

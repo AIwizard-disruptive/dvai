@@ -131,3 +131,4 @@ async def enrich_organization_from_email(email: str) -> Optional[Dict]:
     domain = email.split('@')[1]
     return await LogoScraper.get_logo_from_domain(domain)
 
+
