@@ -73,3 +73,6 @@ LINEAR_SETUP_COMPLETE.md
 
 CONFIGURATION_STATUS.md
 backend/setup_google_docs_generator.py
+backend/.env
+backend/env.local.configured
+.cursorrules
