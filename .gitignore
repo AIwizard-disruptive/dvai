@@ -72,6 +72,10 @@ temp/
 *TEST*.tsx
 *_test.tsx
 
+# Files with hardcoded secrets - NEVER commit these
+backend/fix_empty_docs.py
+backend/generate_dealflow_docs.py
+
 backend/env.local.configured
 LINEAR_SETUP_COMPLETE.md
 
