@@ -6,7 +6,7 @@ import {
     CheckCircle2,
     Circle,
     CircleDot,
-    CircleX,
+    XCircle,
     MessageSquare,
     MoreHorizontal,
     Plus,
@@ -58,7 +58,7 @@ const statusConfig = {
   },
   canceled: {
     label: 'Canceled',
-    icon: CircleX,
+    icon: XCircle,
     color: 'text-gray-400 dark:text-gray-500',
     bgColor: 'bg-gray-100 dark:bg-gray-800'
   }

@@ -8,7 +8,7 @@ import {
     ChevronDown,
     Circle,
     CircleDot,
-    CircleX,
+    XCircle,
     Link as LinkIcon,
     MessageSquare,
     Tag,
@@ -23,7 +23,7 @@ const statusOptions = [
   { value: 'todo', label: 'Todo', icon: Circle, color: 'text-gray-500 dark:text-gray-400' },
   { value: 'in_progress', label: 'In Progress', icon: CircleDot, color: 'text-yellow-500 dark:text-yellow-400' },
   { value: 'done', label: 'Done', icon: CheckCircle2, color: 'text-green-500 dark:text-green-400' },
-  { value: 'canceled', label: 'Canceled', icon: CircleX, color: 'text-gray-400 dark:text-gray-500' }
+  { value: 'canceled', label: 'Canceled', icon: XCircle, color: 'text-gray-400 dark:text-gray-500' }
 ] as const
 
 interface TaskDetailPanelProps {
