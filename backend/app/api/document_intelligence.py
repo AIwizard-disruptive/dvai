@@ -392,3 +392,4 @@ async def process_document_pipeline(
         
         print(f"❌ Document {document_id} processing failed: {e}")
 
+

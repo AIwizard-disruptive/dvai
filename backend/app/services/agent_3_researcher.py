@@ -414,3 +414,4 @@ def get_researcher_agent() -> ResearcherAgent:
         _researcher_agent = ResearcherAgent()
     return _researcher_agent
 
+

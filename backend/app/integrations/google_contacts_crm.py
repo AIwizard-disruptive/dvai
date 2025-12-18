@@ -557,3 +557,4 @@ def build_person_contact(person_data: Dict, competencies: List[str] = None) -> D
         ]
     }
 
+

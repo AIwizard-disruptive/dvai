@@ -3,6 +3,7 @@ import {
     Activity,
     AlertCircle,
     Bell,
+    Building2,
     Database,
     ExternalLink,
     FileText,
@@ -18,26 +19,26 @@ export default function AdminPage() {
       <div className="space-y-8">
         {/* Header */}
         <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-              <Settings className="h-5 w-5 text-gray-700" />
+          <div className="flex items-center gap-6">
+            <div className="w-10 h-10 flex items-center justify-center">
+              <Settings className="h-6 w-6 text-gray-700 dark:text-gray-300" />
             </div>
-            <h1 className="text-3xl font-semibold text-gray-900">Admin</h1>
+            <h1 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">Admin</h1>
           </div>
-          <p className="text-sm text-gray-600 ml-13">
+          <p className="text-sm text-gray-600 dark:text-gray-400 ml-13">
             System configuration, integrations, and administrative controls
           </p>
         </div>
 
         {/* Warning Banner */}
-        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+        <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
           <div className="flex gap-3">
-            <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
             <div>
-              <div className="text-sm font-medium text-amber-900 mb-1">
+              <div className="text-sm font-medium text-amber-900 dark:text-amber-100 mb-1">
                 Restricted Access Area
               </div>
-              <p className="text-sm text-amber-700">
+              <p className="text-sm text-amber-700 dark:text-amber-300">
                 This is the brain of the system. Most users should work primarily in Google and Linear. 
                 Only partners and system administrators should access these settings regularly.
               </p>
@@ -47,46 +48,46 @@ export default function AdminPage() {
 
         {/* System Status */}
         <div className="space-y-4">
-          <h2 className="text-sm font-medium text-gray-700">System Status</h2>
+          <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">System Status</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 border border-gray-200 rounded-lg">
+            <div className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900">
               <div className="flex items-center gap-3 mb-3">
-                <Database className="h-5 w-5 text-gray-600" />
-                <div className="font-medium text-sm text-gray-900">Database</div>
+                <Database className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                <div className="font-medium text-sm text-gray-900 dark:text-gray-100">Database</div>
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Status</span>
-                  <span className="text-green-600 font-medium">Healthy</span>
+                  <span className="text-gray-600 dark:text-gray-400">Status</span>
+                  <span className="text-green-600 dark:text-green-400 font-medium">Healthy</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Tables</span>
-                  <span className="text-gray-900">24 active</span>
+                  <span className="text-gray-600 dark:text-gray-400">Tables</span>
+                  <span className="text-gray-900 dark:text-gray-100">24 active</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Storage</span>
-                  <span className="text-gray-900">2.4 GB</span>
+                  <span className="text-gray-600 dark:text-gray-400">Storage</span>
+                  <span className="text-gray-900 dark:text-gray-100">2.4 GB</span>
                 </div>
               </div>
             </div>
 
-            <div className="p-4 border border-gray-200 rounded-lg">
+            <div className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900">
               <div className="flex items-center gap-3 mb-3">
-                <Activity className="h-5 w-5 text-gray-600" />
-                <div className="font-medium text-sm text-gray-900">API Usage</div>
+                <Activity className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                <div className="font-medium text-sm text-gray-900 dark:text-gray-100">API Usage</div>
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Requests Today</span>
-                  <span className="text-gray-900">1,247</span>
+                  <span className="text-gray-600 dark:text-gray-400">Requests Today</span>
+                  <span className="text-gray-900 dark:text-gray-100">1,247</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Avg Response</span>
-                  <span className="text-gray-900">142ms</span>
+                  <span className="text-gray-600 dark:text-gray-400">Avg Response</span>
+                  <span className="text-gray-900 dark:text-gray-100">142ms</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Error Rate</span>
-                  <span className="text-green-600 font-medium">0.2%</span>
+                  <span className="text-gray-600 dark:text-gray-400">Error Rate</span>
+                  <span className="text-green-600 dark:text-green-400 font-medium">0.2%</span>
                 </div>
               </div>
             </div>
@@ -95,7 +96,7 @@ export default function AdminPage() {
 
         {/* Integrations */}
         <div className="space-y-4">
-          <h2 className="text-sm font-medium text-gray-700">Integrations</h2>
+          <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">Integrations</h2>
           <div className="space-y-2">
             {[
               {
@@ -119,14 +120,14 @@ export default function AdminPage() {
             ].map((integration, i) => (
               <div
                 key={i}
-                className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors cursor-pointer group"
+                className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 transition-colors cursor-pointer group bg-white dark:bg-gray-900"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <LinkIcon className="h-4 w-4 text-gray-400" />
-                      <div className="font-medium text-sm text-gray-900">{integration.name}</div>
-                      <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded">
+                      <LinkIcon className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+                      <div className="font-medium text-sm text-gray-900 dark:text-gray-100">{integration.name}</div>
+                      <span className="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded">
                         {integration.status}
                       </span>
                     </div>
@@ -134,15 +135,15 @@ export default function AdminPage() {
                       {integration.services.map((service) => (
                         <span
                           key={service}
-                          className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded"
+                          className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded"
                         >
                           {service}
                         </span>
                       ))}
                     </div>
-                    <div className="text-xs text-gray-500">Last sync: {integration.lastSync}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">Last sync: {integration.lastSync}</div>
                   </div>
-                  <ExternalLink className="h-4 w-4 text-gray-400 group-hover:text-gray-600" />
+                  <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300" />
                 </div>
               </div>
             ))}
@@ -151,7 +152,7 @@ export default function AdminPage() {
 
         {/* Configuration Sections */}
         <div className="space-y-4">
-          <h2 className="text-sm font-medium text-gray-700">Configuration</h2>
+          <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">Configuration</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {[
               {
@@ -193,17 +194,31 @@ export default function AdminPage() {
             ].map((section) => (
               <button
                 key={section.title}
-                className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-all text-left group"
+                className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 transition-all text-left group"
               >
                 <div className="flex items-start gap-3">
-                  <div className={`w-8 h-8 rounded-lg bg-${section.color}-50 flex items-center justify-center flex-shrink-0`}>
-                    <section.icon className={`h-4 w-4 text-${section.color}-600`} />
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                    section.color === 'blue' ? 'bg-blue-50 dark:bg-blue-900/20' :
+                    section.color === 'red' ? 'bg-red-50 dark:bg-red-900/20' :
+                    section.color === 'yellow' ? 'bg-yellow-50 dark:bg-yellow-900/20' :
+                    section.color === 'purple' ? 'bg-purple-50 dark:bg-purple-900/20' :
+                    section.color === 'green' ? 'bg-green-50 dark:bg-green-900/20' :
+                    'bg-gray-100 dark:bg-gray-800'
+                  }`}>
+                    <section.icon className={`h-4 w-4 ${
+                      section.color === 'blue' ? 'text-blue-600 dark:text-blue-400' :
+                      section.color === 'red' ? 'text-red-600 dark:text-red-400' :
+                      section.color === 'yellow' ? 'text-yellow-600 dark:text-yellow-400' :
+                      section.color === 'purple' ? 'text-purple-600 dark:text-purple-400' :
+                      section.color === 'green' ? 'text-green-600 dark:text-green-400' :
+                      'text-gray-600 dark:text-gray-400'
+                    }`} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-sm text-gray-900 mb-1">{section.title}</div>
-                    <div className="text-xs text-gray-500">{section.description}</div>
+                    <div className="font-medium text-sm text-gray-900 dark:text-gray-100 mb-1">{section.title}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">{section.description}</div>
                   </div>
-                  <ExternalLink className="h-4 w-4 text-gray-400 group-hover:text-gray-600 flex-shrink-0" />
+                  <ExternalLink className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 flex-shrink-0" />
                 </div>
               </button>
             ))}
@@ -212,41 +227,41 @@ export default function AdminPage() {
 
         {/* Four Wheels System Info */}
         <div className="space-y-4">
-          <h2 className="text-sm font-medium text-gray-700">System Architecture</h2>
-          <div className="p-4 border border-gray-200 rounded-lg">
+          <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">System Architecture</h2>
+          <div className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900">
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <Users className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <Users className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-sm font-medium text-gray-900 mb-1">People Wheel</div>
-                  <div className="text-xs text-gray-600">
+                  <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">People Wheel</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
                     Relationship management, contact tracking, meeting intelligence
                   </div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Database className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <Database className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-sm font-medium text-gray-900 mb-1">Dealflow Wheel</div>
-                  <div className="text-xs text-gray-600">
+                  <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Dealflow Wheel</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
                     Investment pipeline, due diligence, deal tracking
                   </div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Building2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                <Building2 className="h-5 w-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-sm font-medium text-gray-900 mb-1">Portfolio Wheel</div>
-                  <div className="text-xs text-gray-600">
+                  <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Portfolio Wheel</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
                     Company monitoring, metrics tracking, portfolio support
                   </div>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <Settings className="h-5 w-5 text-gray-600 flex-shrink-0 mt-0.5" />
+                <Settings className="h-5 w-5 text-gray-600 dark:text-gray-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-sm font-medium text-gray-900 mb-1">Admin Wheel</div>
-                  <div className="text-xs text-gray-600">
+                  <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Admin Wheel</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">
                     System configuration, integrations, user management
                   </div>
                 </div>
@@ -256,28 +271,28 @@ export default function AdminPage() {
         </div>
 
         {/* Best Practices */}
-        <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+        <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
           <div className="flex gap-3">
-            <Shield className="h-5 w-5 text-gray-600 flex-shrink-0 mt-0.5" />
+            <Shield className="h-5 w-5 text-gray-600 dark:text-gray-400 flex-shrink-0 mt-0.5" />
             <div>
-              <div className="text-sm font-medium text-gray-900 mb-2">
+              <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                 Best Practices for System Usage
               </div>
-              <ul className="text-sm text-gray-700 space-y-1.5">
+              <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1.5">
                 <li className="flex gap-2">
-                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-400 dark:text-gray-500">•</span>
                   <span>Daily work should happen in Google Workspace and Linear</span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-400 dark:text-gray-500">•</span>
                   <span>Use this system for strategic oversight and intelligence</span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-400 dark:text-gray-500">•</span>
                   <span>Partners access for decisions and high-level monitoring</span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="text-gray-400">•</span>
+                  <span className="text-gray-400 dark:text-gray-500">•</span>
                   <span>System admins for configuration and integration management</span>
                 </li>
               </ul>
@@ -288,5 +303,3 @@ export default function AdminPage() {
     </AppLayout>
   )
 }
-
-

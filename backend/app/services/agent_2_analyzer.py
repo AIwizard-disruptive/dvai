@@ -470,3 +470,4 @@ def get_analyzer_agent() -> AnalyzerAgent:
         _analyzer_agent = AnalyzerAgent()
     return _analyzer_agent
 
+

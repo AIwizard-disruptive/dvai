@@ -433,3 +433,4 @@ async def setup_custom_schemas(directory_client: GoogleWorkspaceDirectoryClient)
         logger.error(f"Error setting up custom schemas: {e}")
         raise
 
+

@@ -283,3 +283,4 @@ async def test_real_agenda_generation():
     print("\n=== Generated Agenda ===")
     print(service.format_agenda_as_markdown(agenda))
 
+

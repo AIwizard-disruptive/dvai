@@ -641,3 +641,4 @@ CREATE POLICY "alerts_service" ON dv_alerts FOR ALL USING (auth.jwt()->>'role' =
 SELECT '4-Wheel VC Operating System migrations completed!' AS status;
 SELECT 'Created: 18 new tables + 2 materialized views' AS summary;
 
+

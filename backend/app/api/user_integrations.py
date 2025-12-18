@@ -14,6 +14,7 @@ from app.config import settings
 from app.middleware.auth import get_current_user
 from supabase import create_client
 from app.api.styles import get_dv_styles
+from app.api.sidebar_component import get_admin_sidebar
 
 router = APIRouter(prefix="/user-integrations", tags=["User Integrations"])
 
@@ -549,6 +550,7 @@ async def user_slack_status(user = Depends(get_current_user)):
     }).execute()
     
     return {"connected": bool(result.data)}
+
 
 
 

@@ -8,7 +8,7 @@ def get_admin_sidebar(active_page="", user_name="Admin User", user_email="", use
     Generate consistent admin sidebar HTML.
     
     Args:
-        active_page: Current page identifier (e.g., 'dashboard', 'knowledge', 'meetings')
+        active_page: Current page identifier (e.g., 'dashboard', 'people', 'meetings')
         user_name: Logged-in user's name (default: "Admin User")
         user_email: User's email
         user_image_url: LinkedIn or profile image URL
@@ -25,24 +25,36 @@ def get_admin_sidebar(active_page="", user_name="Admin User", user_email="", use
     avatar_html = f'<img src="{user_image_url}" alt="{user_name}" onerror="this.style.display=\'none\'; this.parentElement.textContent=\'{initials}\';">' if user_image_url else initials
     
     return f"""
+    <!-- Admin Alert - Shows for 3 seconds on first load -->
+    <div id="admin-alert" class="admin-alert" style="display: none;">
+        <div class="admin-alert-content">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; color: #d97706;">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <div style="flex: 1;">
+                <div style="font-weight: 600; color: #92400e; margin-bottom: 4px;">Admin Only</div>
+                <div style="font-size: 13px; color: #b45309;">Partners & administrators only. Team uses Google & Linear.</div>
+            </div>
+            <button onclick="closeAdminAlert()" class="admin-alert-close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
     <div class="sidebar" id="sidebar">
         <!-- Sidebar Header -->
         <div class="sidebar-header">
-            <div class="sidebar-logo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                    <path d="M2 17l10 5 10-5"/>
-                    <path d="M2 12l10 5 10-5"/>
-                </svg>
-                Disruptive Ventures
-            </div>
+            <img 
+                src="/static/dv-wordmark.png" 
+                alt="Disruptive Ventures" 
+                style="height: 32px; width: auto; object-fit: contain; margin-bottom: 8px;"
+            />
             <div class="sidebar-subtitle">Admin Command Center</div>
-        </div>
-        
-        <!-- Admin Warning - NO COLORED ICONS -->
-        <div class="sidebar-warning">
-            <div class="sidebar-warning-title">Admin Only</div>
-            <div>Partners & administrators only. Team uses Google & Linear.</div>
         </div>
         
         <!-- Navigation -->
@@ -66,20 +78,15 @@ def get_admin_sidebar(active_page="", user_name="Admin User", user_email="", use
                     Activity Dashboard
                 </a>
                 
-                <a href="/knowledge/" class="sidebar-nav-item {is_active('knowledge')}" style="padding-left: 36px;">
-                    <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 14px; height: 14px;">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                    </svg>
-                    People
-                </a>
-                
-                <a href="/wheels/people/docs" class="sidebar-nav-item {is_active('people-docs')}" style="padding-left: 36px;">
+                <a href="/knowledge-bank/" class="sidebar-nav-item {is_active('knowledge-bank')}" style="padding-left: 36px;">
                     <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 14px; height: 14px;">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                         <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
                     </svg>
-                    Docs
+                    Knowledge Bank
                 </a>
             </div>
             
@@ -101,6 +108,14 @@ def get_admin_sidebar(active_page="", user_name="Admin User", user_email="", use
                         <line x1="12" y1="16" x2="12.01" y2="16"/>
                     </svg>
                     Leads
+                </a>
+                
+                <a href="/wheels/dealflow/companies" class="sidebar-nav-item {is_active('companies')}" style="padding-left: 36px;">
+                    <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width: 14px; height: 14px;">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    Companies
                 </a>
                 
                 <a href="/wheels/dealflow/deals" class="sidebar-nav-item {is_active('deals')}" style="padding-left: 36px;">
@@ -136,6 +151,23 @@ def get_admin_sidebar(active_page="", user_name="Admin User", user_email="", use
                     <line x1="9" y1="21" x2="9" y2="9"/>
                 </svg>
                 Portfolio Dashboard
+            </a>
+            
+            <a href="/settings" class="sidebar-nav-item {is_active('settings')}">
+                <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v6m0 6v6m-6-6h6m6 0h-6M4.22 4.22l4.24 4.24m7.08 0l4.24-4.24m0 15.56l-4.24-4.24m-7.08 0l-4.24 4.24"/>
+                </svg>
+                Settings
+            </a>
+            
+            <a href="/help" class="sidebar-nav-item {is_active('help')}">
+                <svg class="sidebar-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Help & FAQ
             </a>
             
             <!-- SEPARATOR -->
@@ -241,8 +273,44 @@ def get_admin_sidebar(active_page="", user_name="Admin User", user_email="", use
             if (label) label.textContent = isDark ? 'Light Mode' : 'Dark Mode';
         }}
         
+        // Admin Alert - Show for 3 seconds on first load
+        function showAdminAlert() {{
+            const hasSeenAlert = sessionStorage.getItem('admin-alert-seen');
+            
+            if (!hasSeenAlert) {{
+                const alert = document.getElementById('admin-alert');
+                
+                // Show after short delay
+                setTimeout(() => {{
+                    alert.style.display = 'flex';
+                    alert.style.animation = 'slideInFromTop 0.3s ease-out';
+                }}, 500);
+                
+                // Auto-hide after 3 seconds
+                setTimeout(() => {{
+                    alert.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {{
+                        alert.style.display = 'none';
+                        sessionStorage.setItem('admin-alert-seen', 'true');
+                    }}, 300);
+                }}, 3500);
+            }}
+        }}
+        
+        function closeAdminAlert() {{
+            const alert = document.getElementById('admin-alert');
+            alert.style.animation = 'fadeOut 0.3s ease-out';
+            setTimeout(() => {{
+                alert.style.display = 'none';
+                sessionStorage.setItem('admin-alert-seen', 'true');
+            }}, 300);
+        }}
+        
         // Initialize on page load
         window.addEventListener('load', () => {{
+            // Show admin alert
+            showAdminAlert();
+            
             // Restore sidebar state
             const sidebarCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
             if (sidebarCollapsed) {{
@@ -270,5 +338,6 @@ def get_admin_sidebar(active_page="", user_name="Admin User", user_email="", use
         }}, 60000);  // Check every minute
     </script>
     """
+
 
 

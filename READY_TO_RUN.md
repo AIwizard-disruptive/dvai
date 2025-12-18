@@ -279,3 +279,4 @@ Your complete 4-wheel VC operating system will be live.
 
 PEOPLE + DEALFLOW + BUILDING COMPANIES + ADMIN = Complete automation for Disruptive Ventures.
 
+

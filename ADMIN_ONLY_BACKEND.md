@@ -186,3 +186,4 @@ Currently visual warnings only. Future enhancements:
 **Next**: Refresh `http://localhost:8000/knowledge/` or `/dashboard-ui` to see warnings
 
 
+

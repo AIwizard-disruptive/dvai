@@ -87,6 +87,16 @@ class Settings(BaseSettings):
     
     # Sentry
     sentry_dsn: str = ""
+    
+    # Pipedrive CRM
+    pipedrive_api_token: str = ""
+    pipedrive_api_url: str = "https://api.pipedrive.com/v1"
+    pipedrive_company_domain: str = ""  # e.g., "yourcompany.pipedrive.com"
+    
+    # Fortnox Accounting
+    fortnox_api_token: str = ""
+    fortnox_client_secret: str = ""
+    fortnox_api_url: str = "https://api.fortnox.se/3"
 
 
 # Global settings instance

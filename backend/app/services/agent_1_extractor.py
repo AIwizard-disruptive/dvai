@@ -496,3 +496,4 @@ def get_extractor_agent() -> ExtractorAgent:
         _extractor_agent = ExtractorAgent()
     return _extractor_agent
 
+

@@ -205,3 +205,4 @@ COMMENT ON FUNCTION extract_date_from_filename IS 'Extract date from filename us
 --   - Company name extraction
 --   - Meeting type detection
 
+

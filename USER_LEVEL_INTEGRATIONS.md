@@ -681,3 +681,4 @@ async def get_linear_qr(user = Depends(get_current_user)):
 
 
 
+

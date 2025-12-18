@@ -66,7 +66,11 @@ yarn-error.log*
 tmp/
 temp/
 
-
+# Example and test files (not for production)
+*EXAMPLE*.tsx
+*EXAMPLE*.ts
+*TEST*.tsx
+*_test.tsx
 
 backend/env.local.configured
 LINEAR_SETUP_COMPLETE.md
@@ -76,3 +80,4 @@ backend/setup_google_docs_generator.py
 backend/.env
 backend/env.local.configured
 .cursorrules
+

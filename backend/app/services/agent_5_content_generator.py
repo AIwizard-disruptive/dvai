@@ -570,3 +570,4 @@ def get_content_generator_agent() -> ContentGeneratorAgent:
         _content_generator_agent = ContentGeneratorAgent()
     return _content_generator_agent
 
+

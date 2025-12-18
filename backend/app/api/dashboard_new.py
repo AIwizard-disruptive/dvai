@@ -277,3 +277,4 @@ def generate_action_cards(actions):
     return '\n'.join(cards)
 
 
+

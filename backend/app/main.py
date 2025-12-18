@@ -2,7 +2,10 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 import sentry_sdk
+import os
 
 from app.config import settings
 from app.database import init_db, close_db
@@ -44,6 +47,10 @@ from app.api.wheel_people import router as wheel_people_router
 from app.api.wheel_dealflow import router as wheel_dealflow_router
 from app.api.wheel_building import router as wheel_building_router
 from app.api.wheel_admin import router as wheel_admin_router
+from app.api.logo_scraper import router as logo_scraper_router
+from app.api.settings import router as settings_router
+from app.api.help import router as help_router
+from app.api.pipedrive_sync import router as pipedrive_sync_router
 
 
 # Initialize Sentry if configured
@@ -94,7 +101,12 @@ app.add_middleware(
 # Auth middleware
 app.add_middleware(AuthMiddleware)
 
-# Include routers
+# Mount static files for logos
+static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# Include routers - HTML UI routers enabled
 app.include_router(login_ui_router, tags=["Login UI"])
 app.include_router(recording_ui_router, tags=["Recording UI"])
 app.include_router(upload_ui_router, tags=["Upload UI"])
@@ -109,11 +121,12 @@ app.include_router(integration_test_page_router, tags=["Integration Test UI"])
 app.include_router(user_integrations_router, tags=["User Integrations"])
 app.include_router(marcus_test_router, tags=["Marcus Test"])
 app.include_router(linear_sync_router, tags=["Linear Sync"])
-app.include_router(linear_sync_router, tags=["Linear Sync"])
 app.include_router(generate_docs_router, prefix="/docs", tags=["Document Generation"])
 app.include_router(documents_router, prefix="/documents", tags=["Documents"])
 app.include_router(task_assistance_router, prefix="/tasks", tags=["Task Assistance"])
 app.include_router(document_viewer_router, prefix="/viewer", tags=["Document Viewer"])
+
+# Core API endpoints (JSON only)
 app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 app.include_router(orgs_router, prefix="/orgs", tags=["Organizations"])
 app.include_router(meetings_router, prefix="/meetings", tags=["Meetings"])
@@ -130,6 +143,10 @@ app.include_router(wheel_people_router, tags=["Wheels - People"])
 app.include_router(wheel_dealflow_router, tags=["Wheels - Dealflow"])
 app.include_router(wheel_building_router, tags=["Wheels - Building"])
 app.include_router(wheel_admin_router, tags=["Wheels - Admin"])
+app.include_router(logo_scraper_router, tags=["Logo Scraper"])
+app.include_router(settings_router, tags=["Settings"])
+app.include_router(help_router, tags=["Help"])
+app.include_router(pipedrive_sync_router, tags=["Pipedrive Sync"])
 
 
 @app.get("/health")
@@ -150,4 +167,10 @@ async def root():
         "version": "1.0.0",
         "docs_url": "/docs" if settings.debug else None,
     }
+
+
+@app.get("/people/")
+async def people_redirect():
+    """Redirect /people/ to employee profiles wheel."""
+    return RedirectResponse(url="/wheels/people", status_code=302)
 

@@ -138,3 +138,4 @@ SELECT
 
 -- If critical_tables = 4, materialized_views = 2, helper_functions = 2, you're good! ✅
 
+

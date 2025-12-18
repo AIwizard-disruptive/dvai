@@ -240,3 +240,4 @@ python3 sync_swedish_meeting.py
 **Ready to run it?** The script now properly matches and assigns! 🚀
 
 
+

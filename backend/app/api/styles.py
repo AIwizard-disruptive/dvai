@@ -103,7 +103,6 @@ DV_STYLES = """
         border-bottom-color: #333333;
     }
     
-    body.dark-mode .sidebar-logo,
     body.dark-mode .sidebar-subtitle {
         color: #e5e5e5;
     }
@@ -126,17 +125,17 @@ DV_STYLES = """
         color: #999999;
     }
     
-    body.dark-mode .sidebar-warning {
-        background: #2d2416;
-        border-color: #4a3a1f;
+    body.dark-mode .admin-alert-content {
+        background: rgba(45, 36, 22, 0.95);
+        border-color: rgba(217, 119, 6, 0.5);
     }
-    
-    body.dark-mode .sidebar-warning-title {
+
+    body.dark-mode .admin-alert-close {
         color: #fbbf24;
     }
     
-    body.dark-mode .sidebar-warning div {
-        color: #d4a574;
+    body.dark-mode .admin-alert-close:hover {
+        background: rgba(255, 255, 255, 0.05);
     }
     
     body.dark-mode .sidebar-footer {
@@ -466,14 +465,9 @@ DV_STYLES = """
         border-bottom: 1px solid var(--gray-100);
     }
     
-    .sidebar-logo {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--gray-900);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 4px;
+    .sidebar-header img {
+        max-width: 100%;
+        height: auto;
     }
     
     .sidebar-subtitle {
@@ -571,54 +565,97 @@ DV_STYLES = """
         border-color: #555555;
     }
     
-    .sidebar-warning {
-        background: var(--amber-50);
-        border: 1px solid #fbbf24;
-        border-radius: 6px;
-        padding: 12px;
-        margin: 12px 16px;
-        font-size: 11px;
-        color: #78350f;
-    }
-    
-    .sidebar-warning-title {
-        font-weight: 600;
-        margin-bottom: 4px;
-        color: #92400e;
-    }
-    
-    /* Sidebar Toggle Button - Slides with sidebar */
-    .sidebar-toggle {
+    /* Admin Alert - Floating notification */
+    .admin-alert {
         position: fixed;
         top: 16px;
-        left: 264px;
-        z-index: 1001;
-        padding: 8px;
-        background: white;
-        border: 1px solid var(--gray-200);
-        border-radius: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10000;
+        max-width: 440px;
+        width: calc(100% - 32px);
+    }
+    
+    .admin-alert-content {
+        background: #fffbeb;
+        border: 1px solid #fbbf24;
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        align-items: start;
+        gap: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .admin-alert-close {
+        background: transparent;
+        border: none;
         cursor: pointer;
-        transition: left 0.3s ease, background 0.15s;
+        padding: 4px;
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
+        color: #92400e;
+        transition: background 0.15s;
+    }
+    
+    .admin-alert-close:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Animations */
+    @keyframes slideInFromTop {
+        from {
+            transform: translate(-50%, -100%);
+            opacity: 0;
+        }
+        to {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    
+    /* Sidebar Toggle Button - Clean icon only, positioned at sidebar edge */
+    .sidebar-toggle {
+        position: fixed;
+        top: 24px;
+        left: 288px;
+        z-index: 1001;
+        padding: 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: left 0.3s ease, opacity 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.6;
     }
     
     .sidebar-toggle:hover {
-        background: var(--gray-50);
-        border-color: var(--gray-300);
+        opacity: 1;
     }
     
     .sidebar-toggle svg {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         stroke: var(--gray-600);
         transition: transform 0.3s ease;
     }
     
-    /* When sidebar is collapsed, button moves left with it */
+    /* When sidebar is collapsed, button moves left and rotates */
     .sidebar.collapsed ~ .sidebar-toggle {
-        left: -16px;
+        left: 16px;
     }
     
     /* Rotate icon when collapsed */
@@ -626,13 +663,16 @@ DV_STYLES = """
         transform: rotate(180deg);
     }
     
-    body.dark-mode .sidebar-toggle {
-        background: #2a2a2a;
-        border-color: #404040;
+    body.dark-mode .sidebar-toggle svg {
+        stroke: var(--gray-400);
     }
     
     body.dark-mode .sidebar-toggle:hover {
-        background: #333333;
+        opacity: 1;
+    }
+    
+    body.dark-mode .sidebar-toggle:hover svg {
+        stroke: var(--gray-300);
     }
     
     /* Main Content Area */
@@ -651,12 +691,16 @@ DV_STYLES = """
         padding: 32px;
         border-bottom: 1px solid var(--gray-200);
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
+        text-align: center;
     }
     
     .page-header-left {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     
     .page-title {

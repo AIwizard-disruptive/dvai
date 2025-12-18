@@ -12,7 +12,7 @@ from app.config import settings
 from app.api.styles import get_dv_styles
 from app.api.sidebar_component import get_admin_sidebar
 
-router = APIRouter(prefix="/knowledge", tags=["Knowledge Bank"])
+router = APIRouter(prefix="/knowledge-bank", tags=["Knowledge Bank"])
 
 
 class PolicyDocument(BaseModel):
@@ -295,7 +295,7 @@ async def knowledge_bank_ui():
                     </div>
                 </div>
                 <div id="policies-container" class="card-view">
-                    {generate_policy_cards(policies) if policies else '<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--gray-600);"><div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">No policies yet</div><p style="font-size: 13px; margin-bottom: 16px;">Add your first policy document to get started</p><a href="/knowledge/add-policy" class="btn-primary">+ Add Policy</a></div>'}
+                    {generate_policy_cards(policies) if policies else '<div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--gray-600);"><div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">No policies yet</div><p style="font-size: 13px; margin-bottom: 16px;">Add your first policy document to get started</p><a href="/knowledge-bank/add-policy" class="btn-primary">+ Add Policy</a></div>'}
                 </div>
             </div>
             
@@ -487,8 +487,12 @@ def generate_people_cards(people: list) -> str:
     seen_names = set()
     
     for person in people:
-        name = person.get('name', '').strip()
-        email = person.get('email', '').strip()
+        # Skip if person is None
+        if not person:
+            continue
+            
+        name = (person.get('name') or '').strip()
+        email = (person.get('email') or '').strip()
         
         # Filter: Skip users with missing critical data
         if not name:
@@ -524,7 +528,7 @@ def generate_people_cards(people: list) -> str:
             <div style="color: var(--gray-600); font-size: 12px; margin-bottom: 12px;">
                 {email}
             </div>
-            <a href="/knowledge/person/{person['id']}" class="btn-primary" style="font-size: 13px; padding: 6px 12px;">
+            <a href="/knowledge-bank/person/{person['id']}" class="btn-primary" style="font-size: 13px; padding: 6px 12px;">
                 View Profile
             </a>
         </div>
@@ -698,7 +702,7 @@ async def add_culture_playbook_form():
             }};
             
             try {{
-                const response = await fetch('/knowledge/add-policy', {{
+                const response = await fetch('/knowledge-bank/add-policy', {{
                     method: 'POST',
                     headers: {{'Content-Type': 'application/json'}},
                     body: JSON.stringify(data)
@@ -710,7 +714,7 @@ async def add_culture_playbook_form():
                     document.getElementById('result').style.display = 'block';
                     document.getElementById('result').style.background = '#d4edda';
                     document.getElementById('result').style.color = '#155724';
-                    document.getElementById('result').innerHTML = '✅ Policy added to Knowledge Bank!<br><br><a href="/knowledge" style="color: #155724; font-weight: 600;">View Knowledge Bank →</a>';
+                    document.getElementById('result').innerHTML = '✅ Policy added to Knowledge Bank!<br><br><a href="/knowledge-bank" style="color: #155724; font-weight: 600;">View Knowledge Bank →</a>';
                 }} else {{
                     document.getElementById('result').style.display = 'block';
                     document.getElementById('result').style.background = '#f8d7da';
@@ -729,5 +733,6 @@ async def add_culture_playbook_form():
     """
     
     return HTMLResponse(content=html)
+
 
 

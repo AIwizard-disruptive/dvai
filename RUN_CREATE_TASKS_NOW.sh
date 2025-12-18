@@ -14,3 +14,4 @@ echo "✅ Done! Tasks created for serge@ and wizard@"
 echo ""
 echo "Next: Run 'python3 backend/sync_google_tasks.py' to sync to Google Tasks"
 
+

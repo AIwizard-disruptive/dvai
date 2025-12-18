@@ -169,3 +169,4 @@ echo "  3. Review calendar proposals: curl $API_URL/calendar/proposals -H 'Autho
 echo ""
 echo "🎉 AI Meeting Agenda Generator is working!"
 
+

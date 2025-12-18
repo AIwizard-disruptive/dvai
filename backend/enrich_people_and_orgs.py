@@ -116,10 +116,11 @@ async def enrich_all():
         logo_status = "✅ Logo" if org.get('logo_url') else "⚠️ No logo"
         print(f"  - {org['name']} ({logo_status})")
     
-    print(f"\n🎯 Knowledge Bank: http://localhost:8000/knowledge/")
+    print(f"\n🎯 People Directory: http://localhost:8000/people/")
 
 
 if __name__ == "__main__":
     asyncio.run(enrich_all())
+
 
 
